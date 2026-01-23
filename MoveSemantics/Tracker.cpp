@@ -1,15 +1,19 @@
 #include "Tracker.h"
+#include <string>
 
 int Tracker::nextId = 1;
 
 Tracker::Tracker() 
-    : id(nextId++), payload("default payload")
+    : id(nextId++), 
+    payload("default payload")
 {
     std::cout << "default constructor [id = " << id << "]\n";
 }
 
 Tracker::Tracker(const Tracker& other)
-    : id(nextId++)
+    : id(nextId++), 
+    payload(other.payload),
+    movedFrom(other.movedFrom)
 {
     std::cout << "copy constructor [from id = " << other.id 
         << " -> new id = " << id << "]\n";
@@ -17,9 +21,10 @@ Tracker::Tracker(const Tracker& other)
 
 Tracker::Tracker(Tracker&& other) noexcept
     : id(nextId++),
-    payload(std::move(other.payload))
+    payload(std::move(other.payload)),
+    movedFrom(false)
 {
-    std::cout << "move assignment [from id = " << other.id
+    std::cout << "move constructor [from id = " << other.id
         << " -> new id = " << id << "]\n";
 
     other.movedFrom = true;

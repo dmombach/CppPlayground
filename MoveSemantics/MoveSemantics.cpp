@@ -67,6 +67,29 @@ void VectorAssignmentVsConstruction()
     std::cout << "--- end of function (destructors) ---\n";
 }
 
+void ConstructionVsAssignment()
+{
+    std::cout << "\n--- Step 1: Start with one element ---\n";
+    std::vector<Tracker> v;
+    v.emplace_back();   // default constructor
+
+    std::cout << "\n--- Step 2: Add another element ---\n";
+    Tracker t;
+    v.push_back(t);     // copy constructor
+
+    std::cout << "\n--- Step 3: Replace an element (assignment) ---\n";
+    Tracker a;
+    v[0] = a;           // copy assignment
+
+    std::cout << "\n--- Step 4: Replace with rvalue (move assignment) ---\n";
+    v[1] = Tracker{};   // move assignment
+
+    std::cout << "\n--- Step 5: Force reallocation ---\n";
+    v.reserve(10);      // triggers move constructor for each element
+
+    std::cout << "\n--- End of function ---\n";
+}
+
 int main()
 {
     //Tracker a;
@@ -88,5 +111,7 @@ int main()
 
     //VectorExperiment();
 
-    VectorAssignmentVsConstruction();
+    //VectorAssignmentVsConstruction();
+
+    ConstructionVsAssignment();
 }
