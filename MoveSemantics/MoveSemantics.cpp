@@ -1,20 +1,160 @@
-// MoveSemantics.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "Tracker.h"
+#include <vector>
 
-#include <iostream>
+Tracker MakeTracker()
+{
+    Tracker t;
+    return t;               // no move, goes through RVO so object is built directly on calling variable (c in main(), in this case)
+    return std::move(t);    // forces move, disables RVO
+}
+
+void TakeByValue(Tracker t)
+{
+    std::cout << "Inside TakeByValue\n";
+}
+
+void TaksByConstRef(const Tracker& t)
+{
+    std::cout << "Inside TakeByConstRef\n";
+}
+
+void TakeByRvalueRef(Tracker&& t)
+{
+    std::cout << "Inside TakeByRvalueRef\n";
+}
+
+void VectorExperiment()
+{
+    std::vector<Tracker> v;
+    v.reserve(3);   // optional, but helps control behavior
+
+    std::cout << "--- push_back #1 ---\n";
+    v.push_back(Tracker{});
+
+    std::cout << "--- push_back #2 ---\n";
+    v.push_back(Tracker{});
+
+    std::cout << "--- push_back #3 ---\n";
+    v.push_back(Tracker{});
+
+    std::cout << "--- push_back #4 (reallocation happens) ---\n";
+    v.push_back(Tracker{});
+}
+
+void VectorAssignmentVsConstruction()
+{
+    std::cout << "--- default construction ---\n";
+    std::vector<Tracker> v;
+    v.emplace_back();   // default constructor 
+
+    std::cout << "--- copy construction ---\n";
+    Tracker t;
+    v.push_back(t);   // copy constructor 
+
+    std::cout << "--- move construction ---\n";
+    v.push_back(Tracker{});   // move constructor 
+
+    std::cout << "--- reallocation (move or copy constructors) ---\n";
+    v.reserve(10);   // triggers moves of existing elements 
+
+    std::cout << "--- copy assignment ---\n";
+    Tracker a;
+    v[0] = a;   // copy assignment
+
+    std::cout << "--- move assignment ---\n";
+    v[1] = Tracker{};   // move assignment
+
+    std::cout << "--- end of function (destructors) ---\n";
+}
+
+void ConstructionVsAssignment()
+{
+    std::cout << "\n--- Step 1: Start with one element ---\n";
+    std::vector<Tracker> v;
+    v.emplace_back();   // default constructor
+
+    std::cout << "\n--- Step 2: Add another element ---\n";
+    Tracker t;
+    v.push_back(t);     // copy constructor
+
+    std::cout << "\n--- Step 3: Replace an element (assignment) ---\n";
+    Tracker a;
+    v[0] = a;           // copy assignment
+
+    std::cout << "\n--- Step 4: Replace with rvalue (move assignment) ---\n";
+    v[1] = Tracker{};   // move assignment
+
+    std::cout << "\n--- Step 5: Force reallocation ---\n";
+    v.reserve(10);      // triggers move constructor for each element
+
+    std::cout << "\n--- End of function ---\n";
+}
+
+void PrintTrackerIdentity_CopyAssignment()
+{
+    Tracker a;
+    Tracker b;
+    
+    std::cout << "\n--- Before copy assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+
+    std::cout << "\n--- Copy assignment: a = b; ---\n";
+    a = b; 
+
+    std::cout << "\n--- After copy assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+}
+
+void PrintTrackerIdentity_MoveAssignment()
+{
+    Tracker a;
+    Tracker b;
+
+    std::cout << "\n--- Before move assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+
+    std::cout << "\n--- Move assignment: a = std::move(b); ---\n";
+    a = std::move(b); 
+
+    std::cout << "\n--- After move assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+
+    std::cout << "\n---Move construction ---\n";
+    Tracker c = std::move(a);
+    c.PrintIdentity("c");
+    a.PrintIdentity("a (after move)");
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //Tracker a;
+    //Tracker b = a;              // copy
+    ////Tracker b = std::move(a);   // guaranteed move
+    //Tracker c = MakeTracker();  // move (usually)
+
+    //std::cout << "\n-- -- --\n\n";
+
+    //Tracker d;
+    //TakeByValue(d);             // copy 
+    //TakeByValue(std::move(d));  // move 
+
+    //Tracker e;
+    //TaksByConstRef(e);          // no copy, no move 
+    //TakeByRvalueRef(Tracker{}); // binds to temporary 
+
+    //std::cout << "\n-- -- --\n\n";
+
+    //VectorExperiment();
+
+    //VectorAssignmentVsConstruction();
+
+    //ConstructionVsAssignment();
+
+    //PrintTrackerIdentity_CopyAssignment();
+
+    PrintTrackerIdentity_MoveAssignment();
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

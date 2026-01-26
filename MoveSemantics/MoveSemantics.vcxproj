@@ -124,6 +124,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MoveSemantics.cpp" />
+    <ClCompile Include="Tracker.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Tracker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
