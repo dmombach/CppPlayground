@@ -56,6 +56,8 @@ Tracker& Tracker::operator=(Tracker&& other) noexcept
     if (this != &other)
     {
         payload = std::move(other.payload);
+        movedFrom = false;
+        other.movedFrom = true;
     }
 
     return *this;

@@ -90,6 +90,45 @@ void ConstructionVsAssignment()
     std::cout << "\n--- End of function ---\n";
 }
 
+void PrintTrackerIdentity_CopyAssignment()
+{
+    Tracker a;
+    Tracker b;
+    
+    std::cout << "\n--- Before copy assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+
+    std::cout << "\n--- Copy assignment: a = b; ---\n";
+    a = b; 
+
+    std::cout << "\n--- After copy assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+}
+
+void PrintTrackerIdentity_MoveAssignment()
+{
+    Tracker a;
+    Tracker b;
+
+    std::cout << "\n--- Before move assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+
+    std::cout << "\n--- Move assignment: a = std::move(b); ---\n";
+    a = std::move(b); 
+
+    std::cout << "\n--- After move assignment ---\n";
+    a.PrintIdentity("a");
+    b.PrintIdentity("b");
+
+    std::cout << "\n---Move construction ---\n";
+    Tracker c = std::move(a);
+    c.PrintIdentity("c");
+    a.PrintIdentity("a (after move)");
+}
+
 int main()
 {
     //Tracker a;
@@ -113,5 +152,9 @@ int main()
 
     //VectorAssignmentVsConstruction();
 
-    ConstructionVsAssignment();
+    //ConstructionVsAssignment();
+
+    //PrintTrackerIdentity_CopyAssignment();
+
+    PrintTrackerIdentity_MoveAssignment();
 }

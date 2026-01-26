@@ -17,6 +17,15 @@ public:
     Tracker& operator=(const Tracker& other);
     Tracker& operator=(Tracker&& other) noexcept;
 
+    void PrintIdentity(const char* label) const
+    {
+        std::cout << label
+            << " | object address = " << this
+            << " | id = " << id
+            << " | movedFrom = " << std::boolalpha << movedFrom
+            << "\n";
+    }
+
 private:
     int id;
     static int nextId;
