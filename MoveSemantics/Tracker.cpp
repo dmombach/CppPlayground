@@ -30,6 +30,14 @@ Tracker::Tracker(Tracker&& other) noexcept
     other.movedFrom = true;
 }
 
+Tracker::Tracker(int id, const char* msg)
+    : id(id),
+    payload(msg),
+    movedFrom(false)
+{
+    std::cout << "Tracker(int, const char*) constructor\n";
+}
+
 Tracker::~Tracker()
 {
     std::cout << "destructor [id = " << id << "]\n";

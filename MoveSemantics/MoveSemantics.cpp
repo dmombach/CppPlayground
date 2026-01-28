@@ -129,6 +129,25 @@ void PrintTrackerIdentity_MoveAssignment()
     a.PrintIdentity("a (after move)");
 }
 
+template <typename T>
+void ForwardingTest(T&& value)
+{
+    std::cout << "Calling ForwardingtTest\n";
+    Tracker f(std::forward<T>(value));
+}
+
+template <typename... Args>
+Tracker MakeTracker_Bad(Args... args)
+{
+    return Tracker(args...);    // loses rvalue-ness
+}
+
+template <typename... Args>
+Tracker MakeTracker(Args&&... args)
+{
+    return Tracker(std::forward<Args>(args)...);
+}
+
 int main()
 {
     //Tracker a;
@@ -156,5 +175,38 @@ int main()
 
     //PrintTrackerIdentity_CopyAssignment();
 
-    PrintTrackerIdentity_MoveAssignment();
+    //PrintTrackerIdentity_MoveAssignment();
+
+//#pragma region Perfect Forwarding
+//
+//    Tracker a;
+//
+//    ForwardingTest(a);              // should COPY 
+//    ForwardingTest(std::move(a));   // should MOVE 
+//
+//    std::cout << "\n--- Passing lvalue --\n";
+//    auto t1 = MakeTracker(a);               // should COPY 
+//
+//    std::cout << "\n--- Passing rvalue ---\n";
+//    auto t2 = MakeTracker(std::move(a));    // should MOVE 
+//
+//#pragma endregion 
+
+#pragma region Using vector emplace_back 
+
+    std::vector<Tracker> v;
+
+    Tracker a;
+
+    std::cout << "\n--- emplace_back with lvalue ---\n";
+    v.emplace_back(a);               // should COPY 
+
+    std::cout << "\n--- emplace_back with rvalue ---\n";
+    v.emplace_back(std::move(a));    // should MOVE 
+
+    std::cout << "\n--- emplace_back with constructor args ---\n";
+    v.emplace_back(42, "hello");    // constructs directly in place 
+
+#pragma endregion 
+
 }

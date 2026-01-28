@@ -9,6 +9,7 @@ public:
     Tracker();
     Tracker(const Tracker& other);
     Tracker(Tracker&& other) noexcept;
+    Tracker(int, const char*);
     
     // Destructor
     ~Tracker();
