@@ -24,8 +24,19 @@ Tracker::Tracker(Tracker&& other) noexcept
     payload(std::move(other.payload)),
     movedFrom(false)
 {
-    std::cout << "move constructor [from id = " << other.id
-        << " -> new id = " << id << "]\n";
+    const char* reason = nullptr;
+
+    if (other.movedFrom)
+    {
+        reason = "move from temporary";
+    }
+    else
+    {
+        reason = "move during reallocation or user move";
+    }
+
+    std::cout << "move constructor (" << reason << ") [from id = "
+        << other.id << " -> new id = " << id << "]\n";
 
     other.movedFrom = true;
 }
@@ -35,7 +46,13 @@ Tracker::Tracker(int id, const char* msg)
     payload(msg),
     movedFrom(false)
 {
-    std::cout << "Tracker(int, const char*) constructor\n";
+    std::cout << "Tracker(int, const char*) constructor (temporary)\n";
+}
+
+Tracker::Tracker(int id) 
+    : Tracker(id, "default") 
+{ 
+    std::cout << "Tracker(int) convenience constructor\n"; 
 }
 
 Tracker::~Tracker()
