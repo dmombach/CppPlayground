@@ -192,21 +192,40 @@ int main()
 //
 //#pragma endregion 
 
-#pragma region Using vector emplace_back 
+//#pragma region Using vector emplace_back 
+//
+//    std::vector<Tracker> v;
+//
+//    Tracker a;
+//
+//    std::cout << "\n--- emplace_back with lvalue ---\n";
+//    v.emplace_back(a);               // should COPY 
+//
+//    std::cout << "\n--- emplace_back with rvalue ---\n";
+//    v.emplace_back(std::move(a));    // should MOVE 
+//
+//    std::cout << "\n--- emplace_back with constructor args ---\n";
+//    v.emplace_back(42, "hello");    // constructs directly in place 
+//
+//#pragma endregion 
+
+#pragma region Vector Reallocations
 
     std::vector<Tracker> v;
+    v.reserve(3);   // optional but helps control the first reallocation
 
-    Tracker a;
+    std::cout << "\n--- push_back #1 ---\n";
+    v.push_back(Tracker{ 1, "first" });
 
-    std::cout << "\n--- emplace_back with lvalue ---\n";
-    v.emplace_back(a);               // should COPY 
+    std::cout << "\n--- push_back #2 ---\n";
+    v.push_back(Tracker{ 2, "second" });
 
-    std::cout << "\n--- emplace_back with rvalue ---\n";
-    v.emplace_back(std::move(a));    // should MOVE 
+    std::cout << "\n--- push_back #3 ---\n";
+    v.push_back(Tracker{ 3, "third" });
 
-    std::cout << "\n--- emplace_back with constructor args ---\n";
-    v.emplace_back(42, "hello");    // constructs directly in place 
+    std::cout << "\n--- push_back #4 (reallocation happens!) ---\n";
+    v.push_back(Tracker{ 4, "fourth" });
 
-#pragma endregion 
+#pragma endregion
 
 }
