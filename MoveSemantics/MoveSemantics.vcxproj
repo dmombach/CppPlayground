@@ -123,10 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="MiniVector.inl">
+      <FileType>Document</FileType>
+    </None>
     <ClCompile Include="MoveSemantics.cpp" />
     <ClCompile Include="Tracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MiniVector.h" />
     <ClInclude Include="Tracker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

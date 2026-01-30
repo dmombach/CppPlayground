@@ -1,5 +1,6 @@
-#include "Tracker.h"
 #include <vector>
+#include "Tracker.h"
+#include "MiniVector.h"
 
 Tracker MakeTracker()
 {
@@ -148,6 +149,64 @@ Tracker MakeTracker(Args&&... args)
     return Tracker(std::forward<Args>(args)...);
 }
 
+void PerfectForwarding()
+{
+    Tracker a;
+
+    ForwardingTest(a);              // should COPY 
+    ForwardingTest(std::move(a));   // should MOVE 
+
+    std::cout << "\n--- Passing lvalue --\n";
+    auto t1 = MakeTracker(a);               // should COPY 
+
+    std::cout << "\n--- Passing rvalue ---\n";
+    auto t2 = MakeTracker(std::move(a));    // should MOVE 
+}
+
+void VectorEmplaceBack()
+{
+    std::vector<Tracker> v;
+
+    Tracker a;
+
+    std::cout << "\n--- emplace_back with lvalue ---\n";
+    v.emplace_back(a);               // should COPY 
+
+    std::cout << "\n--- emplace_back with rvalue ---\n";
+    v.emplace_back(std::move(a));    // should MOVE 
+
+    std::cout << "\n--- emplace_back with constructor args ---\n";
+    v.emplace_back(42, "hello");    // constructs directly in place 
+}
+
+void VectorReallocations()
+{
+    std::vector<Tracker> v;
+    v.reserve(3);   // optional but helps control the first reallocation
+
+    std::cout << "\n--- push_back #1 ---\n";
+    v.push_back(Tracker{ 1, "first" });
+
+    std::cout << "\n--- push_back #2 ---\n";
+    v.push_back(Tracker{ 2, "second" });
+
+    std::cout << "\n--- push_back #3 ---\n";
+    v.push_back(Tracker{ 3, "third" });
+
+    std::cout << "\n--- push_back #4 (reallocation happens!) ---\n";
+    v.push_back(Tracker{ 4, "fourth" });
+}
+
+void MiniVectorExperiments()
+{
+    MiniVector<Tracker> mv;
+
+    mv.push_back(Tracker{ 1, "first" });
+    mv.push_back(Tracker{ 2, "second" });
+    mv.push_back(Tracker{ 3, "third" });
+    mv.push_back(Tracker{ 4, "fourth" }); // triggers grow()
+}
+
 int main()
 {
     //Tracker a;
@@ -177,55 +236,11 @@ int main()
 
     //PrintTrackerIdentity_MoveAssignment();
 
-//#pragma region Perfect Forwarding
-//
-//    Tracker a;
-//
-//    ForwardingTest(a);              // should COPY 
-//    ForwardingTest(std::move(a));   // should MOVE 
-//
-//    std::cout << "\n--- Passing lvalue --\n";
-//    auto t1 = MakeTracker(a);               // should COPY 
-//
-//    std::cout << "\n--- Passing rvalue ---\n";
-//    auto t2 = MakeTracker(std::move(a));    // should MOVE 
-//
-//#pragma endregion 
+    //PerfectForwarding();
 
-//#pragma region Using vector emplace_back 
-//
-//    std::vector<Tracker> v;
-//
-//    Tracker a;
-//
-//    std::cout << "\n--- emplace_back with lvalue ---\n";
-//    v.emplace_back(a);               // should COPY 
-//
-//    std::cout << "\n--- emplace_back with rvalue ---\n";
-//    v.emplace_back(std::move(a));    // should MOVE 
-//
-//    std::cout << "\n--- emplace_back with constructor args ---\n";
-//    v.emplace_back(42, "hello");    // constructs directly in place 
-//
-//#pragma endregion 
+    //VectorEmplaceBack();
 
-#pragma region Vector Reallocations
+    //VectorReallocations();
 
-    std::vector<Tracker> v;
-    v.reserve(3);   // optional but helps control the first reallocation
-
-    std::cout << "\n--- push_back #1 ---\n";
-    v.push_back(Tracker{ 1, "first" });
-
-    std::cout << "\n--- push_back #2 ---\n";
-    v.push_back(Tracker{ 2, "second" });
-
-    std::cout << "\n--- push_back #3 ---\n";
-    v.push_back(Tracker{ 3, "third" });
-
-    std::cout << "\n--- push_back #4 (reallocation happens!) ---\n";
-    v.push_back(Tracker{ 4, "fourth" });
-
-#pragma endregion
-
+    MiniVectorExperiments();
 }
