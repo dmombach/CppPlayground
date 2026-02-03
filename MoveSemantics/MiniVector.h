@@ -13,6 +13,7 @@ public:
 
     void push_back(const T& value);
     void push_back(T&& value);
+    void reserve(size_t newCapacity);
 
     size_t size() const { return m_size; };
     size_t capacity() const { return m_capacity; };

@@ -205,6 +205,15 @@ void MiniVectorExperiments()
     mv.push_back(Tracker{ 2, "second" });
     mv.push_back(Tracker{ 3, "third" });
     mv.push_back(Tracker{ 4, "fourth" }); // triggers grow()
+
+    MiniVector<Tracker> mvr;
+    int capacity = 1000;
+    mvr.reserve(capacity);
+
+    for (int i = 0; i < capacity; ++i)
+    {
+        mvr.push_back(Tracker{ i });
+    }
 }
 
 int main()
