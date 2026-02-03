@@ -39,6 +39,32 @@ void MiniVector<T>::grow()
 }
 
 template <typename T>
+void MiniVector<T>::reserve(size_t newCapacity)
+{
+    if (newCapacity <= m_capacity)
+    {
+        return;
+    }
+
+    T* newData = static_cast<T*>(std::malloc(newCapacity * sizeof(T)));
+
+    for (size_t i = 0; i < m_size; ++i)
+    {
+        new (newData + i) T(std::move(m_data[i]));
+    }
+
+    for (size_t i = 0; i < m_size; ++i)
+    {
+        m_data[i].~T();
+    }
+
+    std::free(m_data);
+
+    m_data = newData;
+    m_capacity = newCapacity;
+}
+
+template <typename T>
 void MiniVector<T>::push_back(const T& value)
 {
     if (m_size == m_capacity)
