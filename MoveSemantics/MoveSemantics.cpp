@@ -197,7 +197,7 @@ void VectorReallocations()
     v.push_back(Tracker{ 4, "fourth" });
 }
 
-void MiniVectorExperiments()
+void MiniVectorGrow()
 {
     MiniVector<Tracker> mv;
 
@@ -205,15 +205,36 @@ void MiniVectorExperiments()
     mv.push_back(Tracker{ 2, "second" });
     mv.push_back(Tracker{ 3, "third" });
     mv.push_back(Tracker{ 4, "fourth" }); // triggers grow()
+}
 
-    MiniVector<Tracker> mvr;
+void MiniVectorReserve()
+{
+    MiniVector<Tracker> mv;
+
     int capacity = 1000;
-    mvr.reserve(capacity);
+    mv.reserve(capacity);
 
     for (int i = 0; i < capacity; ++i)
     {
-        mvr.push_back(Tracker{ i });
+        mv.push_back(Tracker{ i });
     }
+}
+
+void MiniVectorResize()
+{
+    MiniVector<Tracker> mv;
+
+    mv.resize(3); // should default-construct 3 Trackers
+    mv.resize(1); // should destroy 2 Trackers
+    mv.resize(5); // should default-construct 4 more Trackers
+}
+
+void MiniVectorCopy()
+{
+    MiniVector<Tracker> mv;
+    mv.resize(3);
+
+    MiniVector<Tracker> mv2 = mv; // copy constructor
 }
 
 int main()
@@ -251,5 +272,11 @@ int main()
 
     //VectorReallocations();
 
-    MiniVectorExperiments();
+    //MiniVectorGrow();
+
+    //MiniVectorReserve(); 
+
+    //MiniVectorResize();
+
+    MiniVectorCopy();
 }
