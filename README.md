@@ -1,4 +1,7 @@
 <p align="center">
+  <img src="ModernCPP_Training.png" width="180" alt="Project Logo">
+</p>
+<p align="center">
   <img src="https://img.shields.io/badge/C++-17/20/23-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" />
   <img src="https://img.shields.io/badge/CMake-3.20+-064F8C?style=for-the-badge&logo=cmake&logoColor=white" />
   <img src="https://img.shields.io/badge/GCC-11+-F34B7D?style=for-the-badge&logo=gnu&logoColor=white" />
