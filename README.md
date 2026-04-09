@@ -1,3 +1,11 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/C++-17/20/23-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" />
+  <img src="https://img.shields.io/badge/CMake-3.20+-064F8C?style=for-the-badge&logo=cmake&logoColor=white" />
+  <img src="https://img.shields.io/badge/GCC-11+-F34B7D?style=for-the-badge&logo=gnu&logoColor=white" />
+  <img src="https://img.shields.io/badge/Clang-14+-262D3A?style=for-the-badge&logo=llvm&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tests-GoogleTest-4285F4?style=for-the-badge&logo=googletest&logoColor=white" />
+</p>
+
 # **CppPlayground**
 
 A personal learning space for exploring **modern C++** concepts through small, focused experiments.  
