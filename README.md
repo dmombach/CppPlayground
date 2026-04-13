@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="ModernCPP_Training.png" width="180" alt="Project Logo">
+  <img src="ModernCPP_Training.png" width="300" alt="Project Logo">
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/C++-17/20/23-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" />
